@@ -17,14 +17,18 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 import src.compat  # noqa: F401 — ragas/langchain-community 兼容补丁，必须在 ragas 之前导入
 
-from ragas import evaluate
-from ragas.metrics.collections import (
-    Faithfulness,
-    AnswerRelevancy,
-    ContextPrecision,
-    ContextRecall,
-    FactualCorrectness,
-)
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    from ragas.metrics import (  # noqa: E402
+        Faithfulness,
+        AnswerRelevancy,
+        ContextPrecision,
+        ContextRecall,
+        FactualCorrectness,
+    )
+
+from ragas import evaluate, EvaluationDataset
 from ragas.llms import LangchainLLMWrapper
 from ragas.embeddings import HuggingFaceEmbeddings
 
@@ -67,16 +71,19 @@ class RagasEvaluator:
 
     @staticmethod
     def _create_embed_model():
-        """加载本地 BGE-large-zh embedding 模型。"""
+        """加载本地 BGE-large-zh embedding 模型，包装为兼容 Ragas 接口。"""
         model_dir = str(PROJECT_ROOT / "src" / "bge-large-zh-v1.5")
-        return HuggingFaceEmbeddings(
-            model_name=model_dir,
-            model_kwargs={"device": "cpu"},
-        )
+        model = HuggingFaceEmbeddings(model=model_dir, device="cpu")
+        # Ragas 内部可能通过 LangChain 兼容接口调用，补全缺失方法
+        if not hasattr(model, "embed_query"):
+            model.embed_query = lambda text: model.embed_text(text)  # type: ignore
+        if not hasattr(model, "embed_documents"):
+            model.embed_documents = lambda texts: model.embed_texts(texts)  # type: ignore
+        return model
 
     @staticmethod
-    def _build_dataset(data: list[dict]) -> dict:
-        """将收集的数据列表转换为 Ragas evaluate() 所需的 dict 格式。"""
+    def _build_dataset(data: list[dict]) -> EvaluationDataset:
+        """将收集的数据列表转换为 Ragas EvaluationDataset。"""
         if not data:
             raise ValueError("评估数据集为空")
         if not isinstance(data, list) or not isinstance(data[0], dict):
@@ -85,12 +92,15 @@ class RagasEvaluator:
             if key not in data[0]:
                 raise ValueError(f"评估数据缺少必需字段: {key}")
 
-        return {
-            "user_input": [item["user_input"] for item in data],
-            "response": [item.get("response", "") for item in data],
-            "retrieved_contexts": [item.get("retrieved_contexts", []) for item in data],
-            "reference": [item.get("reference", "") for item in data],
-        }
+        return EvaluationDataset.from_dict([
+            {
+                "user_input": item["user_input"],
+                "response": item.get("response", ""),
+                "retrieved_contexts": item.get("retrieved_contexts", []),
+                "reference": item.get("reference", ""),
+            }
+            for item in data
+        ])
 
     @staticmethod
     def _extract_scores(result) -> dict[str, list[float]]:
@@ -121,11 +131,7 @@ class RagasEvaluator:
         """评估检索质量：ContextPrecision, ContextRecall。"""
         dataset = self._build_dataset(data)
         metrics = [ContextPrecision(), ContextRecall()]
-        result = evaluate(
-            dataset=dataset,
-            metrics=metrics,
-            llm=self._llm,
-        )
+        result = evaluate(dataset=dataset, metrics=metrics, llm=self._llm)
         return self._extract_scores(result)
 
     def evaluate_generation(self, data: list[dict]) -> dict[str, list[float]]:
