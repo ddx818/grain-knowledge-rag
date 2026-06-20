@@ -21,8 +21,9 @@ env/
 # ===== 向量数据库持久化 =====
 chroma_data/
 
-# ===== 嵌入模型（大型二进制文件）=====
+# ===== 模型文件（通过 src/download.py 下载）=====
 src/bge-large-zh-v1.5/
+src/bge-reranker-v2-m3/
 
 # ===== 用户文档 =====
 documents/
