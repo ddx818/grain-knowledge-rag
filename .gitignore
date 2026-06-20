@@ -1,0 +1,50 @@
+# ===== 敏感凭据 =====
+.env
+
+# ===== Python 字节码 =====
+__pycache__/
+*.py[cod]
+*.pyo
+
+# ===== IDE 配置 =====
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ===== 虚拟环境 =====
+.venv/
+venv/
+env/
+
+# ===== 向量数据库持久化 =====
+chroma_data/
+
+# ===== 嵌入模型（大型二进制文件）=====
+src/bge-large-zh-v1.5/
+
+# ===== 用户文档 =====
+documents/
+
+# ===== 评估生成结果 =====
+eval/results_*.json
+eval/test_questions.json
+
+# ===== 测试输出 =====
+db_test_output.txt
+*.log
+
+# ===== 无关文件 =====
+AI应用开发面试题及答案.md
+智能体开发/
+
+# ===== 损坏/无效文件名 =====
+*agenttests*
+
+# ===== Claude Code 内部文件 =====
+docs/superpowers/
+
+# ===== 临时文件 =====
+temp_uploads/
+*.tmp

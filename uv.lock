@@ -23,6 +23,7 @@ dependencies = [
     { name = "jieba" },
     { name = "langchain" },
     { name = "langchain-google-vertexai" },
+    { name = "langchain-mcp-adapters" },
     { name = "langchain-openai" },
     { name = "llama-index" },
     { name = "llama-index-embeddings-huggingface" },
@@ -60,6 +61,7 @@ requires-dist = [
     { name = "jieba", specifier = ">=0.42.1" },
     { name = "langchain", specifier = ">=1.3.0" },
     { name = "langchain-google-vertexai", specifier = ">=3.2.3" },
+    { name = "langchain-mcp-adapters", specifier = ">=0.2.2" },
     { name = "langchain-openai", specifier = ">=1.2.1" },
     { name = "llama-index", specifier = ">=0.14.21" },
     { name = "llama-index-embeddings-huggingface", specifier = ">=0.7.0" },
@@ -1819,6 +1821,20 @@ dependencies = [
 sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/9e/17/f102da74e0c0be1f880efd5d2e796efe9e1fc6354149404293cd6569391f/langchain_google_vertexai-3.2.3.tar.gz", hash = "sha256:10cc3fc932bde57f905c499460a9e3afd170a3127b8683ac7d48e61c1b038619", size = 350802, upload-time = "2026-04-29T21:13:01.182Z" }
 wheels = [
     { url = "https://pypi.tuna.tsinghua.edu.cn/packages/e3/68/ae7f4634b259cae1031ab5e1c29ab1d4e0f4948c1c109305f272fd873cdf/langchain_google_vertexai-3.2.3-py3-none-any.whl", hash = "sha256:20114a3121eba26fafc420243738a334c77838f68933993f138798919f02a1da", size = 118691, upload-time = "2026-04-29T21:12:59.807Z" },
+]
+
+[[package]]
+name = "langchain-mcp-adapters"
+version = "0.2.2"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+dependencies = [
+    { name = "langchain-core" },
+    { name = "mcp" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/0e/66/1cc7039e2daaddcdea9d8887851fe6eb67401925999b2aa394aa855c7132/langchain_mcp_adapters-0.2.2.tar.gz", hash = "sha256:12d39e91ae4389c54b61b221094e53850b6e152934d8bc10c80665d600e76530", size = 37942, upload-time = "2026-03-16T17:13:30.35Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/7d/2f/15d5e6c1765d8404a9cce38d8c81d7b33fb3392f9db5b992c000dddbd2a3/langchain_mcp_adapters-0.2.2-py3-none-any.whl", hash = "sha256:d08e64954e86281002653071b7430e0377c9a577cb4ac3143abfeb3e24ef8797", size = 23288, upload-time = "2026-03-16T17:13:29.073Z" },
 ]
 
 [[package]]

@@ -1,0 +1,13 @@
+{
+  "model": {
+    "name": "deepseek-chat",
+    "base_url": "https://api.deepseek.com/v1",
+    "temperature": 0.3,
+    "max_tokens": 1024
+  },
+  "fallback_models": {
+    "cheap": "deepseek-chat",
+    "standard": "deepseek-chat",
+    "reasoner": "deepseek-reasoner"
+  }
+}

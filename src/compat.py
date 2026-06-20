@@ -10,6 +10,7 @@ ragas 0.4.3 依赖 `langchain_community.chat_models.vertexai.ChatVertexAI`，
 
 import sys
 import importlib
+from types import ModuleType
 
 
 def _install_compat() -> None:
@@ -25,9 +26,9 @@ def _install_compat() -> None:
         spec = importlib.util.find_spec("langchain_google_vertexai")
         compat_module = importlib.util.module_from_spec(spec) if spec else None
         if compat_module is None:
-            from types import ModuleType
             compat_module = ModuleType(module_name)
 
+        compat_module.__name__ = module_name
         compat_module.ChatVertexAI = ChatVertexAI
         sys.modules[module_name] = compat_module
 
