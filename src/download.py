@@ -67,11 +67,11 @@ def main() -> int:
 
     print()
     if failed:
-        print(f"⚠ {len(failed)} 个模型下载失败: {', '.join(failed)}")
+        print(f"!! {len(failed)} 个模型下载失败: {', '.join(failed)}")
         print("  请检查网络连接后重试。")
         return 1
     else:
-        print("✓ 所有模型就绪！")
+        print("[OK] 所有模型就绪！")
         return 0
 
 
